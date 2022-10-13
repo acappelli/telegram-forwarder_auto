@@ -32,12 +32,13 @@ TO = [int(i) for i in TO_.split()]
 
 try:
     BotzHubUser = TelegramClient(StringSession(SESSION), APP_ID, API_HASH)
-    BotzHubUser.start()
+    
 except Exception as ap:
     print(f"ERROR - {ap}")
     exit(1)
 
-@BotzHubUser.on(events.NewMessage(incoming=True, chats=FROM))
+@BotzHubUser.on(events.NewMessage(chats=FROM))
+
 async def sender_bH(event):
     for i in TO:
         try:
@@ -49,4 +50,5 @@ async def sender_bH(event):
             print(e)
 
 print("Bot has started.")
+BotzHubUser.start()
 BotzHubUser.run_until_disconnected()
