@@ -40,6 +40,7 @@ except Exception as ap:
 @BotzHubUser.on(events.NewMessage(chats=FROM))
 
 async def sender_bH(event):
+    print('Message', event.id, 'changed at', event.date, 'text', event)
     for i in TO:
         try:
             await BotzHubUser.send_message(
@@ -48,6 +49,29 @@ async def sender_bH(event):
             )
         except Exception as e:
             print(e)
+
+
+@BotzHubUser.on(events.MessageEdited(chats=FROM))
+
+async def handler(event):
+    # Log the date of new edits
+    print('Message', event.id, 'changed at', event.date, 'text', event)
+    for i in TO:
+        try:
+            message = await BotzHubUser.send_message(
+                i,
+                event.message
+            )
+
+            await BotzHubUser.edit_message(
+                i,
+                message.id,
+                "Modificato: \n"+message.message
+            )
+
+        except Exception as e:
+            print(e)
+
 
 print("Bot has started.")
 BotzHubUser.start()
